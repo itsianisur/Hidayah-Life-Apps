@@ -27,8 +27,8 @@ export interface AppDownloadConfig {
 }
 
 // TODO: Update `githubOwner` with your GitHub username or organization
-export const GITHUB_OWNER = 'anisurrahman';
-export const REPO_NAME = 'hidayah-life-apps';
+export const GITHUB_OWNER = 'itsianisur';
+export const REPO_NAME = 'Hidayah-Life-Apps';
 export const CURRENT_APP_VERSION = '1.0.0';
 
 const BASE_RELEASE_URL = `https://github.com/${GITHUB_OWNER}/${REPO_NAME}/releases/latest/download`;

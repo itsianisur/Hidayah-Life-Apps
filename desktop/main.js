@@ -223,7 +223,7 @@ function buildAppMenu() {
         },
         {
           label: 'GitHub Releases & Downloads',
-          click: () => shell.openExternal('https://github.com/anisurrahman/hidayah-life-apps/releases/latest'),
+          click: () => shell.openExternal('https://github.com/itsianisur/Hidayah-Life-Apps/releases/latest'),
         },
         ...(!isMac
           ? [
