@@ -1,0 +1,74 @@
+# Electron Builder Configuration for Hidayah Life
+# Free-tier GitHub Releases distribution model (No paid code signing certificates)
+
+appId: com.hidayahlife.app
+productName: "Hidayah Life"
+copyright: "Copyright © 2026 Hidayah Life"
+asar: false
+directories:
+  output: dist
+  buildResources: assets
+
+files:
+  - "main.js"
+  - "preload.js"
+  - "assets/**/*"
+  - "package.json"
+
+# ==============================================================================
+# macOS Configuration
+# Free distribution: Unsigned / Self-hosted DMG (Universal binary: x64 + arm64)
+# Stable filename: Hidayah-Life-macOS.dmg (allows permanent /latest download link)
+# ==============================================================================
+mac:
+  category: public.app-category.lifestyle
+  icon: assets/icon.png
+  target:
+    - target: dmg
+      arch:
+        - universal
+  artifactName: "Hidayah-Life-macOS.dmg"
+  # Explicitly disable signing/notarization requirement for free open-source distribution
+  identity: null
+  gatekeeperAssess: false
+  hardenedRuntime: false
+
+dmg:
+  title: "Hidayah Life"
+  contents:
+    - x: 130
+      y: 220
+      type: file
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications
+  window:
+    width: 540
+    height: 380
+
+# ==============================================================================
+# Windows Configuration
+# Free distribution: Unsigned NSIS per-user installer (no admin privileges needed)
+# Stable filename: Hidayah-Life-Windows-Setup.exe (allows permanent /latest download link)
+# ==============================================================================
+win:
+  icon: assets/icon.png
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: "Hidayah-Life-Windows-Setup.exe"
+  # Explicitly disable code signing for free tier
+  sign: null
+  verifyUpdateCodeSignature: false
+
+nsis:
+  oneClick: true
+  perMachine: false # Per-user installer (does not require Administrator rights)
+  allowElevation: false
+  allowToChangeInstallationDirectory: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: "Hidayah Life"
+  runAfterFinish: true

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Hidayah Life</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: #041A13;
+      color: #FFF3D1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hind Siliguri", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .splash-container {
+      text-align: center;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .logo {
+      width: 110px;
+      height: 110px;
+      margin-bottom: 24px;
+      border-radius: 26px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      animation: pulse 2s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.04); opacity: 0.92; }
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #E8B85A;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+    p {
+      font-size: 14px;
+      color: #A3C9B8;
+      max-width: 280px;
+      line-height: 1.5;
+    }
+    .spinner {
+      margin-top: 28px;
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(232, 184, 90, 0.2);
+      border-top-color: #E8B85A;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .status-text {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #8CA397;
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-container">
+    <img src="../assets/icon.png" alt="Hidayah Life Logo" class="logo" onerror="this.style.display='none'">
+    <h1>Hidayah Life</h1>
+    <p>ইসলামিক জ্ঞান ও সংযোগের উন্মুক্ত প্ল্যাটফর্ম</p>
+    <div class="spinner"></div>
+    <div id="status" class="status-text">লোড হচ্ছে...</div>
+  </div>
+
+  <script src="prayer-scheduler.js"></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+name: Release Multiplatform Installers
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    name: Build macOS (.dmg)
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Install desktop dependencies
+        run: |
+          cd desktop
+          npm ci
+
+      - name: Build macOS DMG (Universal x64 + arm64)
+        run: |
+          cd desktop
+          npm run dist:mac
+
+      - name: Verify macOS DMG exists
+        run: |
+          ls -lh desktop/dist/Hidayah-Life-macOS.dmg
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-artifact
+          path: desktop/dist/Hidayah-Life-macOS.dmg
+          if-no-files-found: error
+
+  windows:
+    name: Build Windows (.exe)
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Install desktop dependencies
+        run: |
+          cd desktop
+          npm ci
+
+      - name: Build Windows NSIS Setup
+        run: |
+          cd desktop
+          npm run dist:win
+
+      - name: Verify Windows installer exists
+        run: |
+          Get-ChildItem -Path desktop/dist/Hidayah-Life-Windows-Setup.exe
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-artifact
+          path: desktop/dist/Hidayah-Life-Windows-Setup.exe
+          if-no-files-found: error
+
+  android:
+    name: Build Android APK (.apk)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install mobile dependencies
+        run: |
+          cd mobile
+          npm ci
+
+      - name: Sync Capacitor project
+        run: |
+          cd mobile
+          npx cap sync android
+
+      - name: Prepare keystore from GitHub Secrets
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > mobile/android/app/release.keystore
+            echo "Keystore decoded successfully."
+          else
+            echo "No ANDROID_KEYSTORE_B64 secret found. Falling back to unsigned/debug build."
+          fi
+
+      - name: Build Android Release APK
+        env:
+          KEYSTORE_PATH: "release.keystore"
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          cd mobile/android
+          chmod +x gradlew
+          ./gradlew assembleRelease
+
+      - name: Locate and prepare final APK artifact
+        run: |
+          # Check for signed release APK or unsigned release fallback
+          if [ -f "mobile/android/app/build/outputs/apk/release/app-release.apk" ]; then
+            cp mobile/android/app/build/outputs/apk/release/app-release.apk Hidayah-Life-Android.apk
+          elif [ -f "mobile/android/app/build/outputs/apk/release/app-release-unsigned.apk" ]; then
+            cp mobile/android/app/build/outputs/apk/release/app-release-unsigned.apk Hidayah-Life-Android.apk
+          else
+            echo "Could not find expected release APK output!"
+            find mobile/android/app/build/outputs/apk/ -type f
+            exit 1
+          fi
+          ls -lh Hidayah-Life-Android.apk
+
+      - name: Upload Android artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-artifact
+          path: Hidayah-Life-Android.apk
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    needs: [macos, windows, android]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-artifact
+          path: release-artifacts
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-artifact
+          path: release-artifacts
+
+      - name: Download Android artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: android-artifact
+          path: release-artifacts
+
+      - name: Display downloaded release artifacts
+        run: |
+          ls -la release-artifacts/
+
+      - name: Create GitHub Release and attach binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Hidayah Life ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            release-artifacts/Hidayah-Life-macOS.dmg
+            release-artifacts/Hidayah-Life-Windows-Setup.exe
+            release-artifacts/Hidayah-Life-Android.apk

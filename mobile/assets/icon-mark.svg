@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="std-bg" cx="50%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#146049" />
+      <stop offset="55%" stop-color="#0B3D2E" />
+      <stop offset="100%" stop-color="#041A13" />
+    </radialGradient>
+    <linearGradient id="gold-grad-std" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3D1" />
+      <stop offset="45%" stop-color="#E8B85A" />
+      <stop offset="75%" stop-color="#D4A03E" />
+      <stop offset="100%" stop-color="#996D18" />
+    </linearGradient>
+    <linearGradient id="gold-subtle-std" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFE8A3" stop-opacity="0.32" />
+      <stop offset="100%" stop-color="#D4A03E" stop-opacity="0.12" />
+    </linearGradient>
+    <filter id="shadow-std" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#020E0A" flood-opacity="0.65" />
+    </filter>
+  </defs>
+
+  <!-- Deep Emerald Rounded Squircle Card -->
+  <rect width="512" height="512" rx="112" fill="url(#std-bg)" />
+  <rect x="12" y="12" width="488" height="488" rx="100" fill="none" stroke="url(#gold-grad-std)" stroke-width="4" opacity="0.35" />
+
+  <!-- Subtle Geometry -->
+  <g opacity="0.08" stroke="#FFF" stroke-width="1.5" fill="none">
+    <circle cx="256" cy="256" r="200" />
+    <circle cx="256" cy="256" r="150" />
+    <polygon points="256,66 390,122 446,256 390,390 256,446 122,390 66,256 122,122" />
+  </g>
+
+  <!-- Core Emblem -->
+  <g transform="translate(256, 256) scale(0.96)" filter="url(#shadow-std)">
+    <!-- 8-pointed star base outline (Rub el Hizb) -->
+    <rect x="-145" y="-145" width="290" height="290" rx="22" fill="url(#gold-subtle-std)" stroke="url(#gold-grad-std)" stroke-width="4.5" />
+    <rect x="-145" y="-145" width="290" height="290" rx="22" fill="url(#gold-subtle-std)" stroke="url(#gold-grad-std)" stroke-width="4.5" transform="rotate(45)" />
+
+    <!-- Ornate inner star glow -->
+    <circle cx="0" cy="0" r="120" fill="none" stroke="url(#gold-grad-std)" stroke-width="2.2" stroke-dasharray="6,4" opacity="0.65" />
+
+    <!-- Islamic Crescent Moon -->
+    <path d="M 22,-84 C -40,-84 -92,-32 -92,30 C -92,90 -40,142 22,142 C 58,142 90,125 108,100 C 68,110 24,94 5,58 C -18,18 -8,-30 30,-52 C 50,-64 72,-64 88,-56 C 72,-76 48,-84 22,-84 Z" 
+          fill="url(#gold-grad-std)" />
+
+    <!-- Center 'H' Monogram & Star (Hidayah) -->
+    <g transform="translate(28, 28)">
+      <!-- Left pillar of H -->
+      <rect x="-26" y="-36" width="10" height="72" rx="5" fill="url(#gold-grad-std)" />
+      <!-- Right pillar of H -->
+      <rect x="16" y="-36" width="10" height="72" rx="5" fill="url(#gold-grad-std)" />
+      <!-- Crossbar of H -->
+      <rect x="-22" y="-4.5" width="44" height="9" rx="4.5" fill="url(#gold-grad-std)" />
+      <!-- Radiant Mini Star in center arch -->
+      <polygon points="0,-50 3.5,-39 14,-39 5.5,-33 9,-23 0,-29 -9,-23 -5.5,-33 -14,-39 -3.5,-39" fill="#FFF3D1" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Hidayah Life</string>
+    <string name="title_activity_main">Hidayah Life</string>
+    <string name="package_name">com.hidayahlife.app</string>
+    <string name="custom_url_scheme">com.hidayahlife.app</string>
+</resources>
