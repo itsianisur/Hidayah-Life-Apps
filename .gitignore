@@ -19,6 +19,7 @@ mobile/android/app/*.iml
 *.keystore
 *.jks
 release.keystore
+keystore.txt
 
 # macOS system files
 .DS_Store
