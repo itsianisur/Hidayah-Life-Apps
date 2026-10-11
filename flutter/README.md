@@ -1,4 +1,4 @@
-# Hidayah Life Flutter App (Phase 1: Prayer Times)
+# Hidayah Life Flutter App (Phase 1 & 2)
 
 Real native multiplatform application for **Android**, **macOS**, and **Windows**, built with [Flutter](https://flutter.dev).
 
@@ -6,12 +6,14 @@ Real native multiplatform application for **Android**, **macOS**, and **Windows*
 
 ## Brand & UI Design
 - **Theme:** Emerald & Islamic Gold with a deep dark background default (`#041A13`, `#0A261D`, `#0E3327`, Gold `#D4A03E`, `#FBBF24`).
-- **Bangla-First Typography:** Bundled **Hind Siliguri** font (Regular, Medium, SemiBold, Bold) with native Bengali numeral conversion (`০`, `১`, `২`, `৩`, ...). English secondary toggle available in Settings.
+- **Bangla & Arabic Typography:**
+  - Bundled **Hind Siliguri** font (Regular, Medium, SemiBold, Bold) with native Bengali numeral conversion (`০`, `১`, `২`, `৩`, ...).
+  - Bundled **Amiri** font (Regular, Bold) for large, authentic Arabic scripture rendering.
 - **Iconography:** Tailored Islamic icons and launcher icons generated from a high-resolution 1024×1024 emerald/gold artwork.
 
 ---
 
-## Features (Phase 1)
+## Features
 
 ### 1. Prayer Times Home Screen
 Inspired by `tareq1988/prayer-times-macos`:
@@ -23,12 +25,29 @@ Inspired by `tareq1988/prayer-times-macos`:
   - `CITY = "Dhaka"`
   - `COUNTRY = "Bangladesh"`
   - `METHOD = 1` (University of Islamic Sciences, Karachi - Hanafi)
+- **Offline Resilience:** Cached locally via `shared_preferences`, midnight auto-refresh, 15-minute retry if offline, and built-in Dhaka fallback.
 
-### 2. Offline Resilience & Reliability
-- **Midnight Daily Refetch:** A background timer automatically fetches the new day's prayer times at 00:01 AM.
-- **Offline Caching:** Times are cached locally via `shared_preferences`. On launch or offline mode (airplane mode), cached times load instantly.
-- **15-Minute Retry:** If offline at launch or during a network failure, the service automatically retries in 15 minutes.
-- **Dhaka Built-in Fallback:** The app never crashes and never shows a blank screen, even on a fresh offline install.
+### 2. Dua & Surah Reader (100% Offline — Phase 2)
+Dedicated offline section with **22 verified items** from the Hidayah Life library:
+- **Categories:**
+  - ছোট সূরা (12 Short Surahs: Al-Fatiha, Al-Ikhlas, Al-Falaq, An-Nas, Al-Kawthar, Al-Asr, Al-Kafirun, Al-Masad, An-Nasr, Quraysh, Al-Fil, Al-Maun)
+  - দৈনন্দিন দোয়া (Daily Duas: sleep, waking up, eating, morning)
+  - রাব্বানা দোয়া (Rabbana Duas from the Quran)
+  - দরুদ শরীফ (Dorud-e-Ibrahim & Short Dorud)
+  - দোয়া কুনুত (Witr Dua-e-Qunut - Hanafi)
+  - Hisnul Muslim situational duas
+- **Detail View:**
+  - Large Arabic scripture using the bundled **Amiri** font.
+  - Pronunciation (transliteration) in Bangla.
+  - Complete Bangla translation.
+  - Virtue (ফজিলত) notes where applicable.
+  - Authentic reference / source at the bottom.
+  - One-tap **Copy to Clipboard** button.
+  - Persistent **Bookmark (Favourite)** toggle.
+- **Instant Search & Favourites:**
+  - Real-time search across Bangla titles, English names, transliteration, meanings, and references.
+  - Filter by category chip or "প্রিয় তালিকা" (Favourites) button.
+  - 100% offline with zero network dependencies.
 
 ### 3. Native Local Notifications
 - **Per-Prayer Alerts:** Scheduled for all 5 daily waqts (Fajr, Dhuhr, Asr, Maghrib, Isha) with Bangla alert bodies:
@@ -43,20 +62,14 @@ Inspired by `tareq1988/prayer-times-macos`:
 - **Persistent Toggle:** Notification enable/disable switch persisted across restarts.
 
 ### 4. Settings Screen
-- **Calculation Method Picker:**
-  - 1: Karachi (University of Islamic Sciences, Karachi - Hanafi) [Default]
-  - 2: ISNA (Islamic Society of North America)
-  - 3: Muslim World League (MWL)
-  - 4: Umm al-Qura University, Makkah
-  - 5: Egyptian General Authority of Survey
-  - 13: Diyanet (Presidency of Religious Affairs, Turkey)
-  - 14: Moonsighting Committee Worldwide
+- **Calculation Method Picker:** Karachi (Default = 1), ISNA (2), MWL (3), Umm al-Qura (4), Egyptian (5), Diyanet (13), Moonsighting Committee (14).
 - **Language Picker:** Bangla (বাংলা - Default) / English (with numeral format switching).
 - **Manual Notification Test Actions:** Trigger instant alerts or 2-minute delayed alerts.
 
 ### 5. In-App Platform WebView Tab
-- Bottom Navigation Bar with 2 tabs:
+- Bottom Navigation Bar with 3 tabs:
   - **নামাজের সময়সূচি (Prayer Times)**
+  - **দোয়া ও সূরা (Dua & Surah)**
   - **ওয়েবসাইট (Platform)**
 - Loads `https://hidayah-life.vercel.app` inside an in-app webview (`flutter_inappwebview`) with state preservation (`IndexedStack`), loading progress bar, reload button, and external browser launcher fallback.
 

@@ -1,8 +1,8 @@
 name: hidayah_life
-description: "Hidayah Life - Free-forever Islamic native app with prayer times and platform access."
+description: "Hidayah Life - Free-forever Islamic native app with prayer times, duas, surahs, and platform access."
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.1.0+2
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -47,6 +47,8 @@ flutter:
   assets:
     - assets/images/app_icon.png
     - assets/fonts/HindSiliguri/
+    - assets/fonts/Amiri/
+    - assets/data/duas.json
 
   fonts:
     - family: HindSiliguri
@@ -58,4 +60,10 @@ flutter:
         - asset: assets/fonts/HindSiliguri/HindSiliguri-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/HindSiliguri/HindSiliguri-Bold.ttf
+          weight: 700
+    - family: Amiri
+      fonts:
+        - asset: assets/fonts/Amiri/Amiri-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Amiri/Amiri-Bold.ttf
           weight: 700

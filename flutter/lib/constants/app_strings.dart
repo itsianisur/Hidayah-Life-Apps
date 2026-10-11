@@ -3,6 +3,7 @@ class AppStrings {
     'bn': {
       'appName': 'হেদায়েত লাইফ',
       'prayerTimes': 'নামাজের সময়সূচি',
+      'duasAndSurahs': 'দোয়া ও সূরা',
       'platform': 'ওয়েবসাইট',
       'settings': 'সেটিংস',
       'nextPrayer': 'পরবর্তী নামাজ',
@@ -44,6 +45,7 @@ class AppStrings {
     'en': {
       'appName': 'Hidayah Life',
       'prayerTimes': 'Prayer Times',
+      'duasAndSurahs': 'Dua & Surah',
       'platform': 'Platform',
       'settings': 'Settings',
       'nextPrayer': 'Next Prayer',

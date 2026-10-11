@@ -5,6 +5,7 @@ import 'screens/home_nav_screen.dart';
 import 'services/notification_service.dart';
 import 'services/prayer_service.dart';
 import 'services/storage_service.dart';
+import 'services/dua_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,7 @@ void main() async {
   await StorageService.init();
   await NotificationService().init();
   await PrayerService().init();
+  await DuaService().init();
 
   runApp(const HidayahLifeApp());
 }

@@ -3,6 +3,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../services/storage_service.dart';
 import 'prayer_times_screen.dart';
+import 'dua_list_screen.dart';
 import 'platform_webview_screen.dart';
 
 class HomeNavScreen extends StatefulWidget {
@@ -36,6 +37,7 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
         index: _currentIndex,
         children: const [
           PrayerTimesScreen(),
+          DuaListScreen(),
           PlatformWebviewScreen(),
         ],
       ),
@@ -44,13 +46,13 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
           color: AppColors.surface,
           border: Border(
             top: BorderSide(
-              color: AppColors.cardBorder.withOpacity(0.5),
+              color: AppColors.cardBorder.withAlpha(120),
               width: 1,
             ),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withAlpha(80),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -59,9 +61,9 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
         child: SafeArea(
           child: NavigationBarTheme(
             data: NavigationBarThemeData(
-              indicatorColor: AppColors.gold.withOpacity(0.2),
-              labelTextStyle: MaterialStateProperty.resolveWith((states) {
-                if (states.contains(MaterialState.selected)) {
+              indicatorColor: AppColors.gold.withAlpha(50),
+              labelTextStyle: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
                   return const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -74,8 +76,8 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
                   color: AppColors.textSecondary,
                 );
               }),
-              iconTheme: MaterialStateProperty.resolveWith((states) {
-                if (states.contains(MaterialState.selected)) {
+              iconTheme: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
                   return const IconThemeData(color: AppColors.goldLight, size: 24);
                 }
                 return const IconThemeData(color: AppColors.textSecondary, size: 22);
@@ -97,6 +99,11 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
                   icon: const Icon(Icons.access_time_rounded),
                   selectedIcon: const Icon(Icons.access_time_filled_rounded),
                   label: AppStrings.get('prayerTimes', _lang),
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.menu_book_outlined),
+                  selectedIcon: const Icon(Icons.menu_book_rounded),
+                  label: AppStrings.get('duasAndSurahs', _lang),
                 ),
                 NavigationDestination(
                   icon: const Icon(Icons.public_rounded),

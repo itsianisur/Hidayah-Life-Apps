@@ -36,25 +36,21 @@ Releases are completely automated via GitHub Actions:
 ### Step 1: Bump Version in `pubspec.yaml`
 Open `flutter/pubspec.yaml` and update the version string:
 ```yaml
-version: 1.0.0+1
-```
-For example, for version `1.0.1`:
-```yaml
-version: 1.0.1+2
+version: 1.1.0+2
 ```
 
 ### Step 2: Commit Changes
 ```bash
 git add flutter/
-git commit -m "chore: bump flutter app version to 1.0.0"
+git commit -m "chore: bump flutter app version to 1.1.0"
 git push origin main
 ```
 
 ### Step 3: Tag and Push
 Create a git tag prefixed with `app-v` and push it:
 ```bash
-git tag app-v1.0.0
-git push origin app-v1.0.0
+git tag app-v1.1.0
+git push origin app-v1.1.0
 ```
 
 ---
