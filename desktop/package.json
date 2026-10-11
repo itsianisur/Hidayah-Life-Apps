@@ -1,7 +1,7 @@
 {
   "name": "hidayah-life-desktop",
   "productName": "Hidayah Life",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Hidayah Life desktop app for macOS and Windows with native prayer alerts",
   "main": "main.js",
   "author": "Hidayah Life <info@hidayahlife.com>",

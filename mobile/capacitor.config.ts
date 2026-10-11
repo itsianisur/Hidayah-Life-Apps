@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Hidayah Life',
   webDir: 'www',
   server: {
-    url: 'https://hidayahlife.com',
+    url: 'https://hidayah-life.vercel.app',
     cleartext: false,
   },
   android: {

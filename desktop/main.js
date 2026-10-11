@@ -5,7 +5,7 @@ const fs = require('fs');
 // ==========================================
 // App Configuration & Prayer Defaults
 // ==========================================
-const APP_URL = 'https://hidayahlife.com';
+const APP_URL = 'https://hidayah-life.vercel.app';
 const PRAYER_CITY = 'Dhaka';
 const PRAYER_COUNTRY = 'Bangladesh';
 const PRAYER_METHOD = 1; // 1 = University of Islamic Sciences, Karachi (Hanafi)
@@ -130,7 +130,7 @@ function buildAppMenu() {
                     type: 'info',
                     title: 'About Hidayah Life',
                     message: 'Hidayah Life Desktop',
-                    detail: 'Version 1.0.0\nFree-forever Islamic learning & networking platform.\nhttps://hidayahlife.com',
+                    detail: 'Version 1.0.1\nFree-forever Islamic learning & networking platform.\nhttps://hidayah-life.vercel.app',
                     buttons: ['OK'],
                     icon: ICON_PATH,
                   });
@@ -235,7 +235,7 @@ function buildAppMenu() {
                     type: 'info',
                     title: 'About Hidayah Life',
                     message: 'Hidayah Life Desktop',
-                    detail: 'Version 1.0.0\nFree-forever Islamic learning & networking platform.\nhttps://hidayahlife.com',
+                    detail: 'Version 1.0.1\nFree-forever Islamic learning & networking platform.\nhttps://hidayah-life.vercel.app',
                     buttons: ['OK'],
                     icon: ICON_PATH,
                   });

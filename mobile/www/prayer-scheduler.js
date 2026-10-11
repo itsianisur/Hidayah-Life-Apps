@@ -1,7 +1,7 @@
 // Hidayah Life - Android Prayer Notification Scheduler
 // Powered by @capacitor/local-notifications
 
-const APP_URL = 'https://hidayahlife.com';
+const APP_URL = 'https://hidayah-life.vercel.app';
 const PRAYER_CITY = 'Dhaka';
 const PRAYER_COUNTRY = 'Bangladesh';
 const PRAYER_METHOD = 1; // 1 = Karachi / Hanafi
