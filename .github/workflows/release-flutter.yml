@@ -1,0 +1,187 @@
+name: Release Flutter Multiplatform Apps
+
+on:
+  push:
+    tags:
+      - 'app-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Prepare Android Keystore from Secret
+        working-directory: flutter
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > android/app/release.keystore
+            echo "Release keystore prepared successfully."
+          else
+            echo "No ANDROID_KEYSTORE_B64 secret found. Will build unsigned or debug fallback."
+          fi
+
+      - name: Install Flutter dependencies
+        working-directory: flutter
+        run: flutter pub get
+
+      - name: Build Android Release APK
+        working-directory: flutter
+        env:
+          KEYSTORE_PATH: "release.keystore"
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: flutter build apk --release
+
+      - name: Prepare APK Artifact
+        working-directory: flutter
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk Hidayah-Life-App-Android.apk
+          ls -lh Hidayah-Life-App-Android.apk
+
+      - name: Upload Android Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-artifact
+          path: flutter/Hidayah-Life-App-Android.apk
+          if-no-files-found: error
+
+  macos:
+    name: Build macOS (.app.zip)
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        working-directory: flutter
+        run: flutter pub get
+
+      - name: Build macOS Release
+        working-directory: flutter
+        run: flutter build macos --release
+
+      - name: Package macOS Application Bundle
+        working-directory: flutter
+        run: |
+          cd build/macos/Build/Products/Release
+          ditto -c -k --sequesterRsrc --keepParent "Hidayah Life.app" ../../../../../Hidayah-Life-App-macOS.zip
+          cd ../../../../..
+          ls -lh Hidayah-Life-App-macOS.zip
+
+      - name: Upload macOS Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-artifact
+          path: flutter/Hidayah-Life-App-macOS.zip
+          if-no-files-found: error
+
+  windows:
+    name: Build Windows (.zip)
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install NuGet
+        run: choco install nuget.commandline -y
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Enable Windows desktop
+        working-directory: flutter
+        run: flutter config --enable-windows-desktop
+
+      - name: Install Flutter dependencies
+        working-directory: flutter
+        run: flutter pub get
+
+      - name: Build Windows Release
+        working-directory: flutter
+        run: flutter build windows --release
+
+      - name: Package Windows Release Bundle
+        working-directory: flutter
+        shell: pwsh
+        run: |
+          Compress-Archive -Path build\windows\x64\runner\Release\* -DestinationPath Hidayah-Life-App-Windows.zip
+          Get-Item Hidayah-Life-App-Windows.zip
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-artifact
+          path: flutter/Hidayah-Life-App-Windows.zip
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    needs: [android, macos, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download Android artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: android-artifact
+          path: release-artifacts
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-artifact
+          path: release-artifacts
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-artifact
+          path: release-artifacts
+
+      - name: Display release artifacts
+        run: ls -la release-artifacts/
+
+      - name: Create GitHub Release and attach binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Hidayah Life Flutter App ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            release-artifacts/Hidayah-Life-App-Android.apk
+            release-artifacts/Hidayah-Life-App-macOS.zip
+            release-artifacts/Hidayah-Life-App-Windows.zip
