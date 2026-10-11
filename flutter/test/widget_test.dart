@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hidayah_life/models/prayer_times_data.dart';
 import 'package:hidayah_life/models/dua_item.dart';
 import 'package:hidayah_life/services/dua_service.dart';
+import 'package:hidayah_life/services/salah_guide_service.dart';
 import 'package:hidayah_life/constants/app_strings.dart';
 
 void main() {
@@ -87,4 +88,42 @@ void main() {
     expect(favs.length, 1);
     expect(favs.first.slug, 'salah-takbir');
   });
+
+  test('SalahGuideService loads all 13 steps offline in exact order', () async {
+    final service = SalahGuideService();
+    await service.init();
+
+    expect(service.steps.length, 13);
+
+    // Verify order 1 to 13
+    for (int i = 0; i < 13; i++) {
+      expect(service.steps[i].order, i + 1);
+      expect(service.steps[i].occasion.isNotEmpty, true);
+      expect(service.steps[i].title.isNotEmpty, true);
+      expect(service.steps[i].arabic.isNotEmpty, true);
+      expect(service.steps[i].transliteration.isNotEmpty, true);
+      expect(service.steps[i].banglaMeaning.isNotEmpty, true);
+    }
+
+    // Check specific steps
+    expect(service.steps[0].title, 'আল্লাহু আকবার');
+    expect(service.steps[0].arabic, 'اللهُ أَكْبَرُ');
+
+    expect(service.steps[3].occasion, 'রুকু');
+    expect(service.steps[3].title, 'সুবহানা রাব্বিয়াল আযীম');
+    expect(service.steps[3].arabic, 'سُبْحَانَ رَبِّيَ الْعَظِيمِ');
+
+    expect(service.steps[6].occasion, 'সিজদা');
+    expect(service.steps[6].title, "সুবহানা রাব্বিয়াল আ'লা");
+    expect(service.steps[6].arabic, 'سُبْحَانَ رَبِّيَ الْأَعْلَى');
+
+    expect(service.steps[7].occasion, 'দুই সিজদার মাঝে');
+    expect(service.steps[7].arabic, 'رَبِّ اغْفِرْ لِي');
+
+    expect(service.steps[12].order, 13);
+    expect(service.steps[12].occasion, 'নামাজ সমাপ্তি (ডানে ও বামে)');
+    expect(service.steps[12].title, 'আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহ');
+    expect(service.steps[12].arabic, 'السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ');
+  });
 }
+

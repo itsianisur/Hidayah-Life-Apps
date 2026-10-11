@@ -3,6 +3,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../services/storage_service.dart';
 import 'prayer_times_screen.dart';
+import 'salah_guide_screen.dart';
 import 'dua_list_screen.dart';
 import 'platform_webview_screen.dart';
 
@@ -37,6 +38,7 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
         index: _currentIndex,
         children: const [
           PrayerTimesScreen(),
+          SalahGuideScreen(),
           DuaListScreen(),
           PlatformWebviewScreen(),
         ],
@@ -65,13 +67,13 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
               labelTextStyle: WidgetStateProperty.resolveWith((states) {
                 if (states.contains(WidgetState.selected)) {
                   return const TextStyle(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.bold,
                     color: AppColors.goldLight,
                   );
                 }
                 return const TextStyle(
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textSecondary,
                 );
@@ -99,6 +101,11 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
                   icon: const Icon(Icons.access_time_rounded),
                   selectedIcon: const Icon(Icons.access_time_filled_rounded),
                   label: AppStrings.get('prayerTimes', _lang),
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.mosque_outlined),
+                  selectedIcon: const Icon(Icons.mosque_rounded),
+                  label: AppStrings.get('salahGuide', _lang),
                 ),
                 NavigationDestination(
                   icon: const Icon(Icons.menu_book_outlined),
