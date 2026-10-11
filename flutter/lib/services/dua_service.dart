@@ -32,6 +32,7 @@ class DuaService {
 
   static const List<DuaCategory> categories = [
     DuaCategory(key: 'all', titleBn: 'সকল', titleEn: 'All'),
+    DuaCategory(key: 'salah', titleBn: 'নামাজের দোয়া', titleEn: 'Salah Adhkar'),
     DuaCategory(key: 'surah', titleBn: 'ছোট সূরা', titleEn: 'Short Surahs'),
     DuaCategory(key: 'daily', titleBn: 'দৈনন্দিন দোয়া', titleEn: 'Daily Duas'),
     DuaCategory(key: 'rabbana', titleBn: 'রাব্বানা দোয়া', titleEn: 'Rabbana Duas'),

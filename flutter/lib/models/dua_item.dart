@@ -57,6 +57,8 @@ class DuaItem {
 
   String getCategoryTitleBn() {
     switch (category) {
+      case 'salah':
+        return 'নামাজের দোয়া';
       case 'surah':
         return 'ছোট সূরা';
       case 'daily':

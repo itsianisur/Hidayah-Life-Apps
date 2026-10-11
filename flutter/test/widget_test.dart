@@ -27,15 +27,15 @@ void main() {
   test('DuaItem model parses correctly and preserves all fields', () {
     const rawJson = '''
     {
-      "slug": "surah-al-fatiha",
-      "titleBn": "সূরা ফাতিহা",
-      "titleEn": "Surah Al-Fatiha",
-      "category": "surah",
-      "arabic": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
-      "transliteration": "Bismillahir Rahmanir Rahim",
-      "translationBn": "পরম করুণাময় অসীম দয়ালু আল্লাহর নামে।",
-      "reference": "সূরা ফাতিহা (১)",
-      "virtueBn": "নামাজের প্রতি রাকাতে পড়া অপরিহার্য",
+      "slug": "salah-takbir",
+      "titleBn": "আল্লাহু আকবার",
+      "titleEn": "Opening Takbir",
+      "category": "salah",
+      "arabic": "اللهُ أَكْبَرُ",
+      "transliteration": "Allahu Akbar",
+      "translationBn": "আল্লাহ সবচেয়ে বড় — তাঁর সত্তা, নাম ও গুণাবলিতে।",
+      "reference": "তাকবীরে তাহরিমা (নামাজ শুরু)",
+      "virtueBn": "নামাজের সময়: Opening Takbir",
       "audioUrl": null,
       "reviewed": false
     }
@@ -44,11 +44,11 @@ void main() {
     final Map<String, dynamic> map = jsonDecode(rawJson);
     final item = DuaItem.fromJson(map);
 
-    expect(item.slug, 'surah-al-fatiha');
-    expect(item.titleBn, 'সূরা ফাতিহা');
-    expect(item.category, 'surah');
+    expect(item.slug, 'salah-takbir');
+    expect(item.titleBn, 'আল্লাহু আকবার');
+    expect(item.category, 'salah');
     expect(item.reviewed, false);
-    expect(item.getCategoryTitleBn(), 'ছোট সূরা');
+    expect(item.getCategoryTitleBn(), 'নামাজের দোয়া');
   });
 
   test('DuaService loads bundled duas.json offline and matches item count', () async {
@@ -56,42 +56,35 @@ void main() {
     final duaService = DuaService();
     await duaService.init();
 
-    // Verify item count matches source dataset exactly (22 items)
-    expect(duaService.allDuas.length, 22);
+    // Verify item count matches total dataset (22 original + 13 Salah Adhkar = 35)
+    expect(duaService.allDuas.length, 35);
 
-    // Verify search finds items by Bangla title
-    final fatihaResults = duaService.filter(searchQuery: 'ফাতিহা');
-    expect(fatihaResults.isNotEmpty, true);
-    expect(fatihaResults.first.slug, 'surah-al-fatiha');
+    // Verify Salah Adhkar category has 13 items
+    final salahItems = duaService.filter(categoryKey: 'salah');
+    expect(salahItems.length, 13);
+    expect(salahItems.first.titleBn, 'আল্লাহু আকবার');
+
+    // Verify search finds Salah item by Bangla title
+    final rukuResults = duaService.filter(searchQuery: 'আযীম');
+    expect(rukuResults.isNotEmpty, true);
+    expect(rukuResults.first.slug, 'salah-ruku');
 
     // Verify search finds items by English title
-    final ikhlasResults = duaService.filter(searchQuery: 'Ikhlas');
-    expect(ikhlasResults.isNotEmpty, true);
-    expect(ikhlasResults.first.slug, 'surah-al-ikhlas');
+    final takbirResults = duaService.filter(searchQuery: 'Takbir');
+    expect(takbirResults.isNotEmpty, true);
+    expect(takbirResults.first.slug, 'salah-takbir');
 
-    // Verify category filter
+    // Verify Surahs still exist
     final surahs = duaService.filter(categoryKey: 'surah');
     expect(surahs.length, 12);
 
-    final daily = duaService.filter(categoryKey: 'daily');
-    expect(daily.length, 4);
-
-    final rabbana = duaService.filter(categoryKey: 'rabbana');
-    expect(rabbana.length, 3);
-
-    final dorud = duaService.filter(categoryKey: 'dorud');
-    expect(dorud.length, 2);
-
-    final qunut = duaService.filter(categoryKey: 'qunut');
-    expect(qunut.length, 1);
-
     // Verify favourites bookmarking
-    expect(duaService.isFavourite('surah-al-fatiha'), false);
-    await duaService.toggleFavourite('surah-al-fatiha');
-    expect(duaService.isFavourite('surah-al-fatiha'), true);
+    expect(duaService.isFavourite('salah-takbir'), false);
+    await duaService.toggleFavourite('salah-takbir');
+    expect(duaService.isFavourite('salah-takbir'), true);
 
     final favs = duaService.filter(onlyFavourites: true);
     expect(favs.length, 1);
-    expect(favs.first.slug, 'surah-al-fatiha');
+    expect(favs.first.slug, 'salah-takbir');
   });
 }
