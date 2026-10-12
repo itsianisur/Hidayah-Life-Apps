@@ -1,4 +1,4 @@
-package com.hidayahlife.hidayah_life
+package com.hidayahlife.app
 
 import io.flutter.embedding.android.FlutterActivity
 

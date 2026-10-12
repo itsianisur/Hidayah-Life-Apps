@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:local_notifier/local_notifier.dart';
+// ignore: unnecessary_import
+import 'package:flutter_local_notifications_windows/flutter_local_notifications_windows.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import '../models/prayer_times_data.dart';
@@ -60,12 +61,10 @@ class NotificationService {
 
       if (kIsWeb) return;
 
-      if (Platform.isWindows) {
-        await localNotifier.setup(
-          appName: 'Hidayah Life',
-          shortcutPolicy: ShortcutPolicy.requireCreate,
-        );
-      } else if (Platform.isAndroid || Platform.isMacOS || Platform.isIOS) {
+      if (Platform.isAndroid ||
+          Platform.isMacOS ||
+          Platform.isIOS ||
+          Platform.isWindows) {
         const AndroidInitializationSettings initializationSettingsAndroid =
             AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -76,15 +75,23 @@ class NotificationService {
           requestSoundPermission: true,
         );
 
+        const WindowsInitializationSettings initializationSettingsWindows =
+            WindowsInitializationSettings(
+          appName: 'Hidayah Life',
+          appUserModelId: 'com.hidayahlife.app',
+          guid: '47F06953-D83E-40A4-AFCF-B320EC2D3FB8',
+        );
+
         const InitializationSettings initializationSettings =
             InitializationSettings(
           android: initializationSettingsAndroid,
           macOS: initializationSettingsDarwin,
           iOS: initializationSettingsDarwin,
+          windows: initializationSettingsWindows,
         );
 
         await _flutterLocalNotificationsPlugin.initialize(
-          initializationSettings,
+          settings: initializationSettings,
         );
 
         // Request permissions on Android 13+
@@ -158,11 +165,12 @@ class NotificationService {
         if (delay.isNegative) return;
 
         final timer = Timer(delay, () async {
-          final notification = LocalNotification(
+          await _flutterLocalNotificationsPlugin.show(
+            id: id,
             title: title,
             body: body,
+            notificationDetails: const NotificationDetails(),
           );
-          await notification.show();
         });
         _windowsTimers.add(timer);
       } else {
@@ -193,14 +201,12 @@ class NotificationService {
         );
 
         await _flutterLocalNotificationsPlugin.zonedSchedule(
-          id,
-          title,
-          body,
-          tzScheduled,
-          platformDetails,
+          id: id,
+          title: title,
+          body: body,
+          scheduledDate: tzScheduled,
+          notificationDetails: platformDetails,
           androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.absoluteTime,
         );
       }
     } catch (e) {
@@ -214,11 +220,12 @@ class NotificationService {
       if (kIsWeb) return;
 
       if (Platform.isWindows) {
-        final notification = LocalNotification(
+        await _flutterLocalNotificationsPlugin.show(
+          id: 999,
           title: 'Hidayah Life',
           body: 'টেস্ট নোটিফিকেশন: নামাজের সময়সূচি নোটিফিকেশন সক্রিয় রয়েছে।',
+          notificationDetails: const NotificationDetails(),
         );
-        await notification.show();
       } else {
         const AndroidNotificationDetails androidDetails =
             AndroidNotificationDetails(
@@ -243,10 +250,10 @@ class NotificationService {
         );
 
         await _flutterLocalNotificationsPlugin.show(
-          999,
-          'Hidayah Life',
-          'টেস্ট নোটিফিকেশন: নামাজের সময়সূচি নোটিফিকেশন সক্রিয় রয়েছে।',
-          platformDetails,
+          id: 999,
+          title: 'Hidayah Life',
+          body: 'টেস্ট নোটিফিকেশন: নামাজের সময়সূচি নোটিফিকেশন সক্রিয় রয়েছে।',
+          notificationDetails: platformDetails,
         );
       }
     } catch (e) {
@@ -271,7 +278,7 @@ class NotificationService {
     }
     _windowsTimers.clear();
 
-    if (!kIsWeb && !Platform.isWindows) {
+    if (!kIsWeb) {
       await _flutterLocalNotificationsPlugin.cancelAll();
     }
   }

@@ -2,7 +2,7 @@ name: hidayah_life
 description: "Hidayah Life - Free-forever Islamic native app with prayer times, duas, surahs, and platform access."
 publish_to: 'none'
 
-version: 1.2.0+4
+version: 1.2.1+5
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -14,9 +14,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.2.2
   shared_preferences: ^2.3.2
-  flutter_local_notifications: ^18.0.1
-  timezone: ^0.9.4
-  local_notifier: ^0.1.6
+  flutter_local_notifications: ^22.3.2
+  timezone: ^0.11.0
+  flutter_local_notifications_windows: ^3.1.1
   flutter_inappwebview: ^6.1.5
   url_launcher: ^6.3.1
   intl: ^0.19.0
