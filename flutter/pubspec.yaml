@@ -2,7 +2,7 @@ name: hidayah_life
 description: "Hidayah Life - Free-forever Islamic native app with prayer times, duas, surahs, and platform access."
 publish_to: 'none'
 
-version: 1.2.2+6
+version: 1.2.3+7
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
