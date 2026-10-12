@@ -58,7 +58,7 @@ Dedicated offline section with **22 verified items** from the Hidayah Life libra
   - Isha: `"এখন এশার সময়"`
 - **Cross-Platform:**
   - **Android & macOS:** `flutter_local_notifications` with high priority channels.
-  - **Windows:** Native desktop toast notifications powered by `local_notifier`.
+  - **Windows:** Native desktop notifications powered by `flutter_local_notifications_windows`.
 - **Persistent Toggle:** Notification enable/disable switch persisted across restarts.
 
 ### 4. Settings Screen
@@ -71,7 +71,7 @@ Dedicated offline section with **22 verified items** from the Hidayah Life libra
   - **নামাজের সময়সূচি (Prayer Times)**
   - **দোয়া ও সূরা (Dua & Surah)**
   - **ওয়েবসাইট (Platform)**
-- Loads `https://hidayah-life.vercel.app` inside an in-app webview (`flutter_inappwebview`) with state preservation (`IndexedStack`), loading progress bar, reload button, and external browser launcher fallback.
+- Loads `https://hidayah-life.vercel.app` inside an in-app webview (`webview_flutter` on mobile/macOS; dedicated desktop browser launcher on Windows) with state preservation (`IndexedStack`), loading progress bar, reload button, and external browser launcher fallback.
 
 ---
 
